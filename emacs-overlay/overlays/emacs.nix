@@ -75,7 +75,6 @@ let
             libName = drv: super.lib.removeSuffix "-grammar" drv.pname;
             libSuffix = if super.stdenv.isDarwin then "dylib" else "so";
             lib = drv: ''lib${libName drv}.${libSuffix}'';
-            # linkCmd = drv: "ln -s ${drv}/parser $out/lib/${lib drv}";
             # /usr/bin/codesign --deep -s - -f $out/lib/${lib drv}
             linkCmd = drv:
               if super.stdenv.isDarwin
@@ -99,11 +98,6 @@ let
                  --replace "Vtreesit_extra_load_path = Qnil;" \
                            "Vtreesit_extra_load_path = list1 ( build_string ( \"${tree-sitter-grammars}/lib\" ) );"
             '';
-            #postPatch = old.postPatch + ''
-            #    substituteInPlace lisp/treesit.el \
-            #    --replace "(provide 'treesit)" \
-            #"(setq treesit-extra-load-path '(\"${tree-sitter-grammars}/lib\"))
-            #(provide 'treesit)"'';
           }
         )
       )));
