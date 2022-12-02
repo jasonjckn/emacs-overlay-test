@@ -11,8 +11,8 @@
     # emacs-src.url = "git+https://github.com/emacs-mirror/emacs";
     flake-utils.url = "github:numtide/flake-utils";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # emacs-overlay.url = "github:jasonjckn/emacs-overlay";
-    emacs-overlay.url = "path:emacs-overlay";
+    emacs-overlay.url = "github:jasonjckn/emacs-overlay/issue-258";
+    # emacs-overlay.url = "path:emacs-overlay";
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
@@ -22,19 +22,19 @@
       inherit (inputs.flake-utils.lib) eachDefaultSystem;
 
     in
-      (eachDefaultSystem (system:
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-            config = {};
-            overlays = [inputs.emacs-overlay.overlays.default];
-          };
+    (eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          config = { };
+          overlays = [ inputs.emacs-overlay.overlays.default ];
+        };
 
-        in
-          {
-            packages.default = pkgs.emacsGitTreeSitter.override {
-              # nativeComp = false;
-            };
-          }
-      ));
+      in
+      {
+        packages.default = pkgs.emacsGitTreeSitter.override {
+          # nativeComp = false;
+        };
+      }
+    ));
 }

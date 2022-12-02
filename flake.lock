@@ -6,14 +6,18 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-CyNT3abJ6o7N6RfmLTw9k9XU+AohNSoA8YaxZi3Sm94=",
-        "path": "emacs-overlay",
-        "type": "path"
+        "lastModified": 1670021585,
+        "narHash": "sha256-RZchPvUlr/MJ2TN7hxAO6qOgpv069piMfkmzxz6/lJ0=",
+        "owner": "jasonjckn",
+        "repo": "emacs-overlay",
+        "rev": "f46ab5bb67588a7166a87f17b3b377177c704ee5",
+        "type": "github"
       },
       "original": {
-        "path": "emacs-overlay",
-        "type": "path"
+        "owner": "jasonjckn",
+        "ref": "issue-258",
+        "repo": "emacs-overlay",
+        "type": "github"
       }
     },
     "flake-utils": {
