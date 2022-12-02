@@ -7,7 +7,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-zcHV3Fr8yN22jq3MMebjF4M2hloPFHfRRUiplAkhub0=",
+        "narHash": "sha256-CyNT3abJ6o7N6RfmLTw9k9XU+AohNSoA8YaxZi3Sm94=",
         "path": "emacs-overlay",
         "type": "path"
       },

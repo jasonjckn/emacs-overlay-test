@@ -33,7 +33,7 @@
         in
           {
             packages.default = pkgs.emacsGitTreeSitter.override {
-              nativeComp = false;
+              # nativeComp = false;
             };
           }
       ));
