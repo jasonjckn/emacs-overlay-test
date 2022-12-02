@@ -73,10 +73,10 @@ let
         drv: drv.overrideAttrs (old:
           let
             libName = drv: super.lib.removeSuffix "-grammar" drv.pname;
-            lib = drv: ''lib${libName drv}.so'';
+            libSuffix = if super.stdenv.isDarwin then "dylib" else "so";
+            lib = drv: ''lib${libName drv}.${libSuffix}'';
             # linkCmd = drv: "ln -s ${drv}/parser $out/lib/${lib drv}";
             # /usr/bin/codesign --deep -s - -f $out/lib/${lib drv}
-
             linkCmd = drv:
               if super.stdenv.isDarwin
               then ''cp ${drv}/parser $out/lib/${lib drv}
@@ -91,7 +91,19 @@ let
             buildInputs = old.buildInputs ++ [ self.pkgs.tree-sitter tree-sitter-grammars ];
             # before building the `.el` files, we need to allow the `tree-sitter` libraries
             # bundled in emacs to be dynamically loaded.
-            TREE_SITTER_LIBS = super.lib.concatStringsSep " " ([ "-ltree-sitter" ] ++ (map linkerFlag plugins)); 
+            TREE_SITTER_LIBS = super.lib.concatStringsSep " " ([ "-ltree-sitter" ] ++ (map linkerFlag plugins));
+            # Fixes tree sitter error: "Buffer has no parser"
+            # Configure emacs where libraries exist nix store.
+            postPatch = old.postPatch + ''
+                 substituteInPlace src/treesit.c \
+                 --replace "Vtreesit_extra_load_path = Qnil;" \
+                           "Vtreesit_extra_load_path = list1 ( build_string ( \"${tree-sitter-grammars}/lib\" ) );"
+            '';
+            #postPatch = old.postPatch + ''
+            #    substituteInPlace lisp/treesit.el \
+            #    --replace "(provide 'treesit)" \
+            #"(setq treesit-extra-load-path '(\"${tree-sitter-grammars}/lib\"))
+            #(provide 'treesit)"'';
           }
         )
       )));
